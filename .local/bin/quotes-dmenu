@@ -1,0 +1,14 @@
+#!/bin/sh
+
+
+sh_menu() {
+	printf "" | dmenu -p "Quotes of:"
+}
+
+query=$*
+if [ -z "$query" ]; then
+	query=$( sh_menu )
+	[ -z "$query" ] && exit 1
+fi
+
+quotes $query | dmenu -i -l 20 | xclip -selection c

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+url=$(ytfzf -A -r -L latest punjab 2019 song  > /tmp/geeturl.txt)
+pkill -f video || mpv --no-video --no-config $( shuf /tmp/geeturl.txt )

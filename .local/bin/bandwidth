@@ -1,0 +1,25 @@
+#!/bin/sh
+
+
+
+
+script_name="bandwidth"
+for pid in $(pidof -x $script_name); do
+    if [ $pid != $$ ]; then
+        killall -9 sleep
+    fi
+done
+
+notify-send "Bandwidth" "On"
+
+init="$(($(cat /sys/class/net/[ew]*/statistics/rx_bytes | paste -sd '+')))"
+
+sleep 100000
+
+fin="$(($(cat /sys/class/net/[ew]*/statistics/rx_bytes | paste -sd '+')))"
+
+printf "%4sB of bandwidth used = $(date +%d:%B:%Y:%l:%M)\\n" $(numfmt --to=iec $(($fin-$init)))
+
+notify-send "Bandwidth" "$(numfmt --to=iec $(($fin-$init)))"
+
+printf "%4sB of bandwidth used = $(date +%d:%B:%Y:%l:%M)\\n" $(numfmt --to=iec $(($fin-$init))) >> ~/.cache/bandwidth.txt

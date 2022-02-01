@@ -1,0 +1,8 @@
+#!/bin/sh
+
+
+if [ "$(pactl info | grep output | head -n 1)" == "Default Sink: alsa_output.pci-0000_07_00.6.analog-stereo" ]; then
+	pactl set-card-profile 1 input:analog-stereo
+elif [ "$(pactl info | grep input)" == "Default Source: alsa_input.pci-0000_07_00.6.analog-stereo" ]; then
+	pactl set-card-profile 1 output:analog-stereo
+fi

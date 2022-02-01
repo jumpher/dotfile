@@ -1,0 +1,6 @@
+#!/bin/sh
+
+
+[ "$(printf "No\\nYes" | dmenu -i -p "Really Backup?")" = "Yes" ] && sudo mount /dev/sda1 /mnt && rsync -avxP --exclude-from=/home/ram/.local/bin/ignore_list.txt /home/ram/ /mnt/Arch-backup/home/user-configs/rsyncs && notify-send "🤚Rsync🤚" "Backup Completed"
+
+sudo umount /dev/sda1

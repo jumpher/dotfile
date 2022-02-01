@@ -1,0 +1,27 @@
+#!/bin/sh
+
+unzip -d /home/ram/vimwiki/remnote/backups/html/ $(ls -t /home/ram/vimwiki/remnote/backups/html/*.zip)
+
+ls /home/ram/vimwiki/remnote/backups/html/*.html > /tmp/wkhtmltoimage
+
+awk '{gsub(/ /,"\\ ")}8' /tmp/wkhtmltoimage > /tmp/newwk
+
+sed -i 's/$/ /' /tmp/newwk
+
+cat /tmp/wkhtmltoimage | cut -d/ -f8 | rev | cut -c 6- | rev | sed 's/$/.pdf/' > /tmp/add
+
+paste -d '\0' /tmp/newwk /tmp/add > /tmp/yo
+
+sed -i 's/^/wkhtmltopdf /' /tmp/yo
+
+sed -i 's/$/ ;/' /tmp/yo
+
+cat /tmp/yo | tr -d '\n' > /tmp/oy
+
+cat /tmp/oy | xclip -selection copy
+
+clear
+
+echo "Next Step       xclip -o     or       Alt+v "
+
+rm /tmp/add /tmp/newwk /tmp/oy /tmp/wkhtmltoimage /tmp/yo

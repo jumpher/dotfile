@@ -1,0 +1,3 @@
+#!/bin/sh
+
+notify-send "Internet Used Today" "$(vnstat -h | grep -A 25 "$(date +%Y-%m-%d)" | head -n -1 | tail -n +2 |grep -v -e "00:00" -e "01:00" -e "02:00" -e "03:00" -e "04:00" -e "05:00" -e "06:00" | cut -d'|'  -f3 | grep MiB | tr -d ' ' | awk '{s+=$1} END {printf "%.0f", s}' && printf ' MB' )"

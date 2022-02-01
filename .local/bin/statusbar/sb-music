@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+#echo "🎵🎼🎵🎶"
+##"$(mocp -Q %file | cut -d'/' -f5 | awk '$0=$1$2' | tail -n 1)"
+#
+#case $BLOCK_BUTTON in
+#	1) $TERMINAL mocp ;;
+#	2) mocp -G ;;  # right click, pause/unpause
+#	3) notify-send "🎵 Playing Now" "$(mocp -Q %file | cut -d'/' -f5)" ;;
+#	4) mpc -r ;;  # scroll up, previous
+#	5) mpc -f  ;;# scroll down, next
+#esac
+
+
+
+printf "🎵🎼🎵🎶"
+#printf "🎵 $(mocp -Q %file | cut -d'/' -f5 | awk '$0=$1$2')"
+
+
+case $BLOCK_BUTTON in
+  2) mocp -G || $TERMINAL mocp ;;
+  1) $TERMINAL mocp ;;
+  3) notify-send "🎵 Playing Now:
+$(mocp -Q %file | cut -d'/' -f5)" ;;
+        4) mocp -r ;;  # scroll up, previous
+  5) mocp -f  ;; # scroll down, next
+esac
+
+#"📖 Music module
+#\- Left Click to toggle pause or open player.
+#- Middle click to open player
+#- Scroll to change songs.
+#- Right Click to open this." ;;

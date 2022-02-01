@@ -1,0 +1,7 @@
+#!/bin/bash
+time=$(date +%k%M)
+
+
+if [[ "$time" -ge 759 || "$time" -le 2200 ]];then
+      notify-send -u critical -t 200000 "$(basename TODO)" "$(cat .todo)"
+fi

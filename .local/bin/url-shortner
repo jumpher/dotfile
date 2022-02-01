@@ -1,0 +1,10 @@
+#!/bin/sh
+
+link="$(xclip -o)"
+if
+	python ~/.local/bin/tuc.py "$link" | grep -w Error
+then
+  notify-send "💢 Error"
+else
+	python ~/.local/bin/tuc.py "$link" | awk '{print $3}' | xclip -selection c && notify-send "🌊 Shortened Url Copied"
+fi

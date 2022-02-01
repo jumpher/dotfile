@@ -1,0 +1,4 @@
+#!/bin/sh
+
+#wal -i   && kill -HUP $(pgrep -u $USER "\bdwm$")
+while true; do setbg ~/Templates/reddit_sub_HiroshigePrints/ && kill -HUP $(pgrep -u $USER "\bdwm$") && sleep 25m ; done

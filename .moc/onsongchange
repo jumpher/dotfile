@@ -1,0 +1,2 @@
+#!/bin/sh
+notify-send -t 1200 "🎵Now Playing" "$(mocp -Q %file | cut -d'/' -f5 |sed -e "s/\b\(.\)/\u\1/g"|grep -oP '.*?(?=\.)')"

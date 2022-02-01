@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Prints the current volume or 🔇 if muted.
+
+case $BLOCK_BUTTON in
+	1) setsid -f "$TERMINAL" -e pulsemixer ;;
+	2) pamixer -t; kill -44 $(pidof dwmblocks);;
+esac
+[ $(pamixer --get-mute) = true ] && echo 🔇 && exit
+vol="$(pamixer --get-volume)"
+echo "🔉$vol%"
+#
+#
+#if [ "$vol" -gt "70" ]; then
+#	icon="🔊"
+#elif [ "$vol" -gt "30" ]; then
+#	icon="🔉"
+#elif [ "$vol" -gt "0" ]; then
+#	icon="🔈"
+#else
+#        echo 🔇 && exit
+#fi
+#
+#echo "$icon$vol%"
+
+	#	3) notify-send "📢 Volume module" "\- Shows volume 🔊, 🔇 if muted. Middle click to mute. Scroll to change." ;;
+#	4) pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks) ;;
+#	5) pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks) ;;
+#	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+
+
+
+#	{ MODKEY,			XK_minus,	spawn,		SHCMD("pamixer --allow-boost -d 5; kill -44 $(pidof dwmblocks)") },
+#	{ MODKEY|ShiftMask,		XK_minus,	spawn,		SHCMD("pamixer --allow-boost -d 15; kill -44 $(pidof dwmblocks)") },
+#	{ MODKEY,			XK_equal,	spawn,		SHCMD("pamixer --allow-boost -i 5; kill -44 $(pidof dwmblocks)") },
+#	{ MODKEY|ShiftMask,		XK_equal,	spawn,		SHCMD("pamixer --allow-boost -i 15; kill -44 $(pidof dwmblocks)") },
+#	{ MODKEY|ShiftMask,		XK_m,		spawn,		SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
+#	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
+#	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+chosen=$(find vimwiki/dmenu-books-shortcuts -type f | cut -c 31- | dmenu -i -l 20 -p "Readable:")
+[ -z "$chosen" ] && exit
+
+zathura /home/ram/vimwiki/dmenu-books-shortcuts/$chosen

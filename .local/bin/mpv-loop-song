@@ -1,0 +1,5 @@
+#!/bin/sh
+
+
+ytfzf -DL | $(xsel -i)
+pkill -f loop-file ||  mpv --no-video --loop-file=inf $(xsel -o)

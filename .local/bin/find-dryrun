@@ -1,0 +1,3 @@
+#!/bin/sh
+
+find . -type d \( -path ./.local/lib -o -path ./.Desktop/Topper/vision \) -prune -false -o -type f

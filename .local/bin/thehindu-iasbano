@@ -1,0 +1,6 @@
+#!/bin/sh
+
+wget -O ~/Documents/News/The_Hindu-$(date +%d_%B_%Y).pdf -P ~/Documents/News/ "https://drive.google.com/uc?export=download&id=$(curl "https://iasbano.com/the-hindu-pdf-download-1.php" | grep td | grep -A 1 $(date +%Oe) | head -n 2 | tail -n 1 | grep -Eo '(http|https)://[^?"]+' | cut -d/ -f6 )"
+
+cd ~/Documents/News/
+zathura The_Hindu-$(date +%d_%B_%Y).pdf

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+aria2c --continue=true -d ~/vimwiki/Wikipedia --continue=true https://en.wikipedia.org/api/rest_v1/page/pdf/$(xclip -o | cut -d/ -f5) && zathura $( ls -Art ~/vimwiki/Wikipedia/* | tail -n 1 )

@@ -1,0 +1,10 @@
+#!/bin/sh
+bvar=$(cat ${PWD}/.cache/bool)
+if (($bvar))
+then
+	echo on
+else
+	echo off
+fi
+bvar=$((1-${bvar}))
+$(echo $bvar > ${PWD}/.cache/bool)

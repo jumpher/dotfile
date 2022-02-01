@@ -1,0 +1,11 @@
+#!/bin/sh
+
+
+
+
+
+echo "New-word"
+
+read varname
+
+curl -s "https://api.urbandictionary.com/v0/define?term={$varname}" | jq '.' | grep --color=always definition | awk 'BEGIN {RS="definition"; ORS=""} {print $0""++i}'

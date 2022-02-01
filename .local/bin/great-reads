@@ -1,0 +1,6 @@
+#!/bin/bash
+
+chosen=$(find vimwiki/great-reads/ -type f | cut -c 21- | dmenu -i -l 10 -p "Great Reads:")
+[ -z "$chosen" ] && exit
+
+zathura /home/ram/vimwiki/great-reads/$chosen

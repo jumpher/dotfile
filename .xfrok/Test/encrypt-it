@@ -1,0 +1,25 @@
+#!/bin/sh
+
+
+sh_menu() {
+	printf "" | dmenu -p "Encrypt it:"
+}
+
+query=$*
+if [ -z "$query" ]; then
+	query=$( sh_menu )
+	[ -z "$query" ] && exit 1
+fi
+
+echo "$query" > /tmp/encq
+
+dmenu -fn Monospace-14 -P -p "Password:" <&- > /tmp/r
+
+openssl aes-256-cbc -salt -pbkdf2 -in /tmp/encq -out /tmp/toss.aes -pass file:/tmp/r
+
+notify-send "Encryption" "🪙 Complete "
+
+rm /tmp/r
+rm /tmp/encq
+
+[ "$(printf "No\\nYes" | dmenu -i -p "Copy file to Send?")" = "Yes" ] && curl -F "file=@/tmp/toss.aes" 0x0.st | xclip -selection c && notify-send "Curl Link" "©️ Copied "

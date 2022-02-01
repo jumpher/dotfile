@@ -1,0 +1,1 @@
+wget $(curl -H "User-agent: 'your bot 0.1'" https://www.reddit.com/user/pearl420x.json | jq '.' | grep url | grep -Eo "https://.*(jpg)\b")

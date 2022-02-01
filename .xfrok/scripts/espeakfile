@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+file=$(find $HOME -type f | dmenu -i  -l 10)
+
+espeak -f "$file" -p 70

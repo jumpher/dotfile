@@ -1,0 +1,15 @@
+#!/bin/sh
+
+
+
+
+
+
+if [ -z "$1" ]; then
+	file=$(find . -not -path '*/\.*' | dmenu -p "Delete which one? " )
+	[ -z "$file" ] && exit 1
+else
+	file="$1"
+fi
+
+[ "$(printf "No\\nYes" | dmenu -i -p "Really delete $file?")" = "Yes" ] && rm "$file" && notify-send "Done" "$file Deleted"

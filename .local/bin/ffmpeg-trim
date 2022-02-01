@@ -1,0 +1,17 @@
+#!/bin/sh
+
+
+echo "Enter the start point:" ; read -r start
+echo "Enter the end point:" ; read -r end
+echo "Enter the output name with format:" ; read -r extn
+
+echo -n "File or Link (f/l)? "
+old_stty_cfg=$(stty -g)
+stty raw -echo
+answer=$( while ! head -c 1 | grep -i '[lf]' ;do true ;done )
+stty $old_stty_cfg
+if echo "$answer" | grep -iq "^f" ;then
+    ls | fzf | awk '{gsub(/ /,"\\ ");print}'| sed 's|^|/home/ram/|' | xsel -i && ffmpeg -i $(xsel -o) -ss $start -to $end -c copy $extn ; echo "done"
+else
+    ffmpeg -i $(yt-dlp -f b --get-url "$(xclip -o)") -ss $start -to $end -c copy $extn ; echo "done"
+fi

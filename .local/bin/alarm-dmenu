@@ -1,0 +1,37 @@
+#!/bin/sh
+
+
+
+# Get minutes.
+minutes="$(echo '' | dmenu -p 'Remind after (in minutes):')"
+# Check that the input is a positive number of minutes.
+[ "$minutes" -ge 0 ] 2> /dev/null || exit 1
+# Get description.
+description="$(echo '' | dmenu -p 'Description:')"
+
+touch '/tmp/some_lock_file.lock'
+	pkill -RTMIN+10 dwmblocks
+	sleep $(( $minutes * 60 ))
+	notify-send -t 600000000 "Reminder" "$description"
+	rm '/tmp/some_lock_file.lock'
+	pkill -RTMIN+10 dwmblocks
+
+if [ "$minutes" -gt 300 ]; then
+	notify-send "Reminder" "The Interval is too long. Try Again"
+#else
+#	sleep $(( $minutes * 60 ))
+#	notify-send -t 600000000 "Reminder" "$description"
+fi
+
+
+
+
+#sec="$(echo $(( $( echo "" | dmenu -p "Remind after (in minutes):") * 60 )))" && sei="$(echo $(echo "" | dmenu -p "Description") )"
+
+
+#if [[ $sec -gt 18000 ]]
+#then
+#  notify-send "Reminder" "The Interval is too long. Try Again"
+#else
+#  sleep $sec && notify-send -t 600000000 "Reminder" "$sei"
+#fi

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+transmission-daemon &
+time=$(date '+%H')
+if [ "$time" -gt 24 ] || [ "$time" -lt 6 ]; then
+	transmission-daemon && notify-send "transmission-daemon on"
+else
+	killall transmission-daemon && notify-send "transmission-daemon off"
+fi

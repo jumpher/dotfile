@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+
+[ "$(printf "No\\nYes" | dmenu -i -p "Read Newspaper?")" = "Yes" ] && wget -O ~/Documents/News/The_Hindu-$(date +%d_%B_%Y).pdf -P ~/Documents/News/ $(curl $(curl -L $(curl "https://dailyepaper.in/home-point/" | grep hindu | grep -Eo '(http|https)://[^?"]+' | head -n 2 | tail -n 1 ) | grep noopener | grep -Eo '(http|https)://[^?"]+' | head -n 3 | tail -n 1 ) | grep iframe | grep -Eo '(http|https)://[^?"]+' ) && zathura ~/Documents/News/The_Hindu-$(date +%d_%B_%Y).pdf
+
+ [ "$(printf "No\\nYes" | dmenu -i -p "Read Analysis?")" = "Yes" ] && wget -O ~/Documents/News/The_Hindu-Analysis-$(date +%d_%B_%Y).pdf -P ~/Documents/News/ $(curl $(curl -L $(curl "https://dailyepaper.in/home-point/" | grep hindu | grep -Eo '(http|https)://[^?"]+' | head -n 1 ) | grep noopener | grep -Eo '(http|https)://[^?"]+' | head -n 1 ) | grep iframe | grep -Eo '(http|https)://[^?"]+' ) && zathura ~/Documents/News/The_Hindu-Analysis-$(date +%d_%B_%Y).pdf
+
+
+find ~/Documents/News/* -mtime +5 -exec rm {} \;

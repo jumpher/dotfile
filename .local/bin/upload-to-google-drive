@@ -1,0 +1,13 @@
+#!/bin/sh
+
+notify-send "Syncing vimwiki with Google Drive"
+
+google-drive-ocamlfuse ~/.google-drive
+
+mkdir ~/.google-drive/vimwiki
+
+rsync -avrxP --exclude='*/' /home/ram/vimwiki/ /home/ram/.google-drive/vimwiki/
+
+notify-send "Synced with Google Drive"
+
+fusermount -u ~/.google-drive

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+url=$(ytfzf -A -r -L lofi instrumental study > /tmp/instrumental.txt)
+pkill -f video || mpv --volume=130 --no-video --no-config $(shuf /tmp/instrumental.txt | uniq)

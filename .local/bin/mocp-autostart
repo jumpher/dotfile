@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mocp -S && mocp -o r,s,n && mocp -l /home/ram/.Music/art\ of\ rally\ OST\ -\ mp3/*; mocp

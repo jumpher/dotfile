@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ -r "$HOME/.dbus/Xdbus" ]; then
+  . "$HOME/.dbus/Xdbus"
+fi
+unread="newsboat -x reload"
+/usr/bin/notify-send -u critical -t 2000 "You have `$unread`"

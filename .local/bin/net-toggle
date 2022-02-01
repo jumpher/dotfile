@@ -1,0 +1,9 @@
+#!/bin/sh
+
+
+if curl gnu.org >/dev/null ;
+then
+	[ "$(printf "No\\nYes" | dmenu -i -p "Turn off Internet?")" = "Yes" ] && sudo ip link set wlp7s0f3u3 down && notify-send "Internet Down"
+else
+	[ "$(printf "No\\nYes" | dmenu -i -p "Turn on Internet?")" = "Yes" ] && sudo ip link set wlp7s0f3u3 up && notify-send "Internet Up"
+fi

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+#
+# Script name: dmsearch
+# Description: Search various search engines (inspired by surfraw).
+# Dependencies: dmenu and a web browser
+# GitLab: https://www.gitlab.com/dwt1/dmscripts
+# License: https://www.gitlab.com/dwt1/dmscripts/LICENSE
+# Contributors: Derek Taylor
+#               Ali Furkan Yıldız
+
+# Defining our web browser.
+DMBROWSER="${BROWSER:-librewolf}"
+
+# An array of search engines.  You can edit this list to add/remove
+# search engines. The format must be: "engine_name]="url".
+# The url format must allow for the search keywords at the end of the url.
+# For example: https://www.amazon.com/s?k=XXXX searches Amazon for 'XXXX'.
+declare -A options
+
+
+options[1-google]="https://www.google.com/search?q="
+options[0-googleimages]="https://www.google.com/search?hl=en&tbm=isch&q="
+options[3-googlemaps]="https://www.google.com/maps/place/"
+options[4-wikipedia]="https://en.wikipedia.org/wiki/"
+options[5-googlenews]="https://news.google.com/search?q="
+options[2-ecosia]="https://www.ecosia.org/search?q="
+options[6-imdb]="https://www.imdb.com/find?q="
+options[7-lbry]="https://lbry.tv/$/search?q="
+options[8-odysee]="https://odysee.com/$/search?q="
+options[9-reddit]="https://www.reddit.com/search/?q="
+options[10-slashdot]="https://slashdot.org/index2.pl?fhfilter="
+options[11-socialblade]="https://socialblade.com/youtube/user/"
+options[12-thesaurus]="https://www.thesaurus.com/misspelling?term="
+options[13-translate]="https://translate.google.com/?sl=auto&tl=en&text="
+options[14-urban]="https://www.urbandictionary.com/define.php?term="
+options[15-webster]="https://www.merriam-webster.com/dictionary/"
+options[16-wiktionary]="https://en.wiktionary.org/wiki/"
+options[17-wolfram]="https://www.wolframalpha.com/input/?i="
+options[18-youtube]="https://www.youtube.com/results?search_query="
+
+# Picking a search engine.
+# shellcheck disable=SC2154
+while [ -z "$engine" ]; do
+    engine=$(printf '%s\n' "${!options[@]}" | sort -n | dmenu -i -l 20 -p 'Choose search engine:') "$@" || exit
+    url="${options["${engine}"]}" || exit
+done
+
+# Searching the chosen engine.
+# shellcheck disable=SC2154
+while [ -z "$query" ]; do
+    query=$(echo "$engine" | dmenu -p 'Enter search query:') "$@" || exit
+done
+
+# Display search results in web browser
+$DMBROWSER "$url""$query"

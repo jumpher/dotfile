@@ -1,0 +1,14 @@
+#!/bin/sh
+
+
+
+
+
+if [ -z "$1" ]; then
+	file=$(pgrep -a zathura | cut -d ' ' -f3 | dmenu -p "Delete which one?" -l 10 )
+	[ -z "$file" ] && exit 1
+else
+	file="$1"
+fi
+
+[ "$(printf "No\\nYes" | dmenu -i -p "Really delete $file" )" = "Yes" ] && rm "$file" && notify-send "🦚 PDF 🦚" "$file Deleted"

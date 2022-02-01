@@ -1,0 +1,46 @@
+#!/bin/sh
+
+
+for prog in dmenu jq sxiv; do
+	[ ! "$(which "$prog")" ] && echo "Please install $prog!" && exit 1
+done
+# If notify-send is not installed, use echo as notifier
+[ ! "$(which notify-send)" ] && notifier="echo" || notifier="notify-send"
+
+configdir="${XDG_CONFIG_HOME:-$HOME/.config}/redyt"
+
+[ ! -d "$configdir" ] && echo "Directory $configdir does not exist, creating..." && mkdir -p "$configdir"
+
+defaultsub="linuxmemes"
+
+[ ! -f "$configdir/user.txt" ] && echo "$defaultsub" >> "$configdir/user.txt"
+
+if [ -z "$1" ]; then
+	# Ask the user to enter a subreddit
+	subreddit=$(dmenu -p "Select Subreddit r/" -i -l 10 < "$configdir/user.txt" | cut -d\| -f1 | awk '{$1=$1;print}')
+
+	# If no subreddit was chosen, exit
+	[ -z "$subreddit" ] && exit 1
+
+else
+	subreddit="$1"
+fi
+
+cachedir="/tmp/redyt/$subreddit"
+
+if [ ! -d "$cachedir" ]; then
+	echo "$cachedir does not exist, creating..."
+	mkdir -p "$cachedir"
+fi
+
+limit=100
+
+curl -H "User-agent: 'your bot 0.1'" "https://www.reddit.com/user/$subreddit/.json" > "$cachedir/tmp.json"
+
+imgs=$(jq '.' < "$cachedir/tmp.json" | grep url | grep -Eo "http(s|)://.*(jpg|png)\b" | sort -u)
+
+[ -z "$imgs" ] && $notifier "Redyt" "Nothing important on "$subreddit" right now" && exit 1
+
+wget -P "$cachedir" $imgs
+
+[ "$(printf "No\\nYes" | dmenu -i -p "View Now ?")" = "Yes" ] && sxiv -b -a "$cachedir"/*.png "$cachedir"/*.jpg

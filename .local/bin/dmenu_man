@@ -1,0 +1,14 @@
+#!/bin/bash
+# dmenu_man - dmenu selection of manual pages
+
+# set the colors
+
+# get list of manuals
+list=$(man -k .)
+
+# call dmenu to select manual
+manual=$(dmenu -i -p "Manpages:" <<< "$list" | awk '{print $1}' | sed "s/[(][^)]*[)]//g")
+[ -z "$manual" ] && exit
+
+# render manual in browser
+man -Tpdf "$manual" | zathura -

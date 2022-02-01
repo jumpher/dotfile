@@ -1,0 +1,39 @@
+#!/bin/sh
+default=${*:-00:25:00}
+
+time=${1:-$default}
+countdown()
+(
+  IFS=:
+  set -- $*
+  secs=$(( ${1#0} * 3600 + ${2#0} * 60 + ${3#0} ))
+  while [ $secs -gt 0 ]
+  do
+    sleep 1 &
+    printf "\r%02d:%02d:%02d" $((secs/3600)) $(( (secs/60)%60)) $((secs%60))
+    secs=$(( $secs - 1 ))
+    wait
+  done
+  echo
+)
+
+#start=`date +%s`
+
+touch '/tmp/pomo-icon.lock'
+	pkill -RTMIN+10 dwmblocks
+
+SECONDS=0
+
+notify-send "Study 📖" "25 minute" && countdown "$time" && notify-send "Break 📕" "5 minute" && sleep 5m && notify-send "Study 📖" "25 minute" && countdown "$time" && notify-send "Break 📕" "5 minute" && sleep 5m && notify-send "Study 📖" "25 minute" && countdown "$time" && notify-send "Break 📕" "5 minute" && sleep 5m && notify-send "Study 📖" "25 minute" && countdown "$time" && notify-send "Break 📕" "5 minute" && sleep 5m && notify-send "Study 📖" "25 minute" && countdown "$time" && notify-send "Break 📕" "5 minute" && sleep 5m && notify-send "Study 📖" "25 minute" && countdown "$time" && notify-send "Break 📕" "5 minute" && sleep 5m
+
+ELAPSED="ELAPSED: $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
+
+notify-send "Pomo Total Time" "$ELAPSED"
+
+	rm '/tmp/pomo-icon.lock'
+	pkill -RTMIN+10 dwmblocks
+
+#end=`date +%s`
+#runtime=$((end-start))
+#notify-send "Total Time" "$runtime sec"
+#while :; do notify-send "Study" "25 minute" && countdown "$time" && notify-send "Break" "5 minute"; sleep 5; done

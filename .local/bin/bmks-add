@@ -1,0 +1,5 @@
+#!/bin/sh
+
+lz4jsoncat .librewolf/mkj1tpqy.default-release/bookmarkbackups/$(ls -S .librewolf/mkj1tpqy.default-release/bookmarkbackups/ | head -n 1 ) | jq . | grep -Eo '(http|https)://[^?"]+'  > /tmp/uri && sed -i -r 's/.*\.(png|jpg|ico|webp|svg).*//I' /tmp/uri && sed -i '/^$/d' /tmp/ur0 && cat /tmp/ur0 >> ~/.bmks/urls  && gawk -i inplace '!a[$0]++' ~/.bmks/urls
+
+lz4jsoncat ~/.mozilla/firefox/8e9da84a.default-release/bookmarkbackups/$(ls -S ~/.mozilla/firefox/8e9da84a.default-release/bookmarkbackups | head -n 1 ) | jq . | grep -Eo '(http|https)://[^?"]+'  > /tmp/ur2 && sed -i -r 's/.*\.(png|jpg|ico|webp|svg).*//I' /tmp/ur2 && sed -i '/^$/d' /tmp/ur2 && cat /tmp/ur2 >> ~/.bmks/urls  && gawk -i inplace '!a[$0]++' ~/.bmks/urls

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+
+head -n $(( $(wc -l ~/.cache/zsh/history | awk '{print $1}') - 10 )) ~/.cache/zsh/history > /tmp/zshdel && mv -f /tmp/zshdel ~/.cache/zsh/history

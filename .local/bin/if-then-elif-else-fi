@@ -1,0 +1,30 @@
+#!/bin/sh
+
+
+
+if echo "$(xclip -o)" |  grep -v  cdni | grep -w
+then
+	#&&  [ "$(printf "No\\nYes" | dmenu -i -p "View Doned?")" = "Yes" ]
+elif echo "$(xclip -o)" | grep -w
+then
+	#&&  [ "$(printf "No\\nYes" | dmenu -i -p "View Doned?")" = "Yes" ]
+elif echo "$(xclip -o)" | grep -w
+then
+	#&&  [ "$(printf "No\\nYes" | dmenu -i -p "View Doned?")" = "Yes" ]
+elif echo "$(xclip -o)" | grep -w
+then
+	#&&  [ "$(printf "No\\nYes" | dmenu -i -p "View Doned?")" = "Yes" ]
+elif echo "$(xclip -o)" | grep -w
+then
+	askdjl
+elif echo "$(xclip -o)" | grep -w
+then
+	aksdj
+elif echo "$(xclip -o)" | grep -w
+then
+	asdkljas
+elif echo "$(xclip -o)" | grep -w -e "gifv" -e "gif" -e "jpg" -e "png" -e "mp4" -e "mkv" -e "mp3"
+then
+	#&& [ "$(printf "No\\nYes" | dmenu -i -p "View Doned?")" = "Yes" ] else
+	notify-send "💢💢💢💢💢💢"
+fi

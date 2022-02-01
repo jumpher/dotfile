@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+w3m \
+-N 'https://lite.duckduckgo.com/lite/' \
+2>/dev/null

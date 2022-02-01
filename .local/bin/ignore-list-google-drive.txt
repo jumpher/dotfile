@@ -1,0 +1,9 @@
+#Directories to be ignored for rsync
+
+vimwiki/great-reads/
+vimwiki/dmenu-books-shortcuts/
+vimwiki/Note/
+vimwiki/remnote/
+vimwiki/Telegrams/
+vimwiki/wgetpdf/
+vimwiki/Wikipedia/
