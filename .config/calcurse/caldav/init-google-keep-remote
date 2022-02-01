@@ -1,0 +1,2 @@
+#!/bin/sh
+CALCURSE_CALDAV_PASSWORD=$(pass show calcurse) calcurse-caldav --init=keep-remote

@@ -1,0 +1,10 @@
+writeCommonTags: couldn't write 'year' tag to 'kinna-chir.opus' as it's not a positive integer
+writeCommonTags: couldn't write 'track' tag to 'kinna-chir.opus' as it's not a positive integer
+writeCommonTags: couldn't write 'year' tag to '2-bhai.opus' as it's not a positive integer
+writeCommonTags: couldn't write 'track' tag to '2-bhai.opus' as it's not a positive integer
+writeCommonTags: couldn't write 'year' tag to '2-bhai.opus' as it's not a positive integer
+writeCommonTags: couldn't write 'track' tag to '2-bhai.opus' as it's not a positive integer
+TagLib: Vorbis::File::read() - Could not find the Vorbis comment header.
+TagLib: Vorbis::File::read() - Could not find the Vorbis comment header.
+writeCommonTags: couldn't write 'year' tag to 'Chora-haryana-ka-ri-maa.opus' as it's not a positive integer
+writeCommonTags: couldn't write 'track' tag to 'Chora-haryana-ka-ri-maa.opus' as it's not a positive integer

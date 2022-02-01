@@ -1,0 +1,175 @@
+
+=== MOTIVATION ===
+Vim's syntax highlighting is very useful for editing files in a particular programming language such as C or Perl. But what if you are using Vim to edit plain text: e.g., personal journal entries, miscellaneous notes or generic documents? In such cases, Vim's statically defined syntax regions are not very useful. What is really needed is a word processor's ability to apply highlighting to an arbitrary selection of text. 
+
+=== OVERVIEW ===
+Txtfmt (The Vim Highlighter) is a combination syntax/filetype plugin that allows you to highlight plain text in Vim. The highlighting mechanism uses invisible tokens that are inserted into a Txtfmt buffer with the aid of intuitive mappings provided by the filetype plugin. The plugin supports up to 8 configurable foreground and background colors, and all combinations of the following formatting attributes: bold, underline, italic, standout, reverse and undercurl.
+Note: Standout, reverse and undercurl are supported only in certain configurations.
+    :help txtfmt-'tokrange'
+
+Nearly everything in this plugin is configurable, with defaults that should work for most users "out of the box". The following is a *partial* list of things that can be configured:
+    mappings
+    colors
+    range of characters used as (hidden) highlighting tokens
+
+=== GETTING STARTED ===
+The usage examples below are intended only to give you a basic feel for how highlighting with Txtfmt works. You can find much more detailed documentation in the Txtfmt help file. However, the project's README.md on Github currently provides the best way to get up and running quickly with Txtfmt:
+
+https://github.com/bpstahlman/txtfmt
+
+=== SCREENSHOTS ===
+http://www.txtfmt.webs.com
+
+=== MANUAL VS AUTO MAPS ===
+!!!! NEW FEATURE (introduced in version 3.0) !!!!
+Prior to version 3, Txtfmt provided only what are now known as "manual maps". Manual maps operate at the level of individual tokens: e.g., insert a new highlighting token or replace an existing one at or near the cursor location. Although there is no highlighting task that cannot be accomplished with manual maps, manual mode forced users to think too much about the details of how to accomplish a particular highlighting task, especially when regions with pre-existing highlighting were involved. To simplify the use-case of highlighting existing text, Txtfmt version 3.0 introduced several new types of maps, known collectively as "auto maps". Auto maps fall into 2 basic categories:
+
+1. Visual maps: operate on the visually selected text
+2. Operator maps: operate on the text moved over (or included in a "text object")
+
+Documentation Note: Auto maps are not yet fully documented in the Txtfmt help file, but their usage is quite simple (simpler than manual maps), so the usage examples below, coupled with the aforementioned README.md on Github, should be more than sufficient for most users to get started.
+
+The next few sections give usage examples of visual/operator auto maps and manual maps.
+Note: If you wish to try the examples now, you will need to install and load the plugin. If you're in a hurry, and are familiar with plugin installation, just drop the bundle of files in the proper location, start Vim and execute the following in an empty buffer:
+
+    :set ft=txtfmt
+
+The "INSTALL DETAILS" section below discusses plugin load in greater detail...
+
+=== USAGE EXAMPLE (VISUAL AUTO MAPS) ===
+Suppose you wish to make a block of text blue, bold-italic.
+Select the text to be highlighted using either mouse or visual mode (e.g., v or V). Then type...
+    \h
+At the resulting Txtfmt prompt, enter the following and hit Enter:
+    f=bi,cb
+Note: You could also have typed "fbi,cb" (without the `='), which would have *added* bold-italic on top of any existing format attributes.
+Mnemonic: The `=' causes any existing format attributes to be overwritten; `+' (the default) adds to, and `-' subtracts from the existing attributes. More on this later...
+
+=== USAGE EXAMPLE (OPERATOR AUTO MAPS) ===
+Suppose you wish to make the word under the cursor red, bold-underline.
+In normal mode, with cursor positioned on the word to be highlighted, type...
+    \h
+Vim is now waiting for a motion or text object. Enter the 'inner word' text object specification:
+    iw
+At the resulting Txtfmt prompt, type the following and hit Enter:
+    f=bu,cr
+
+Now, suppose you wish to italicize and underline the line containing the word just highlighted and the subsequent 2 lines. In normal mode, with cursor still on the previously-highlighted word, type...
+    \h
+Once again, Vim awaits a motion. Enter the normal mode command to move down 2 lines:
+    2j
+At the resulting Txtfmt prompt, type the following and hit Enter:
+    fui
+Note: Because you used "fui" instead of "f=ui", the word you highlighted in the first step has retained the bold attribute.
+
+=== SELECTIVE HIGHLIGHTING ===
+Up until now, we've been applying highlighting to all of the text in a range. But it is also possible to target specific sub-regions within the visually-selected or operated-on text. To apply highlighting selectively, append a `/` to the highlighting spec, followed by a "selector pattern expression": e.g.,
+
+    <highlighting-spec> / <selector-pattern>
+
+Selector patterns are essentially boolean expressions combining format/color specs with standard logical operators `&&', `||', `(...)', and `!'.
+
+Example: Suppose after highlighting many words and phrases in your document with f=b,cr,kg (bold, red text on green background), you decide that f=bi,cb (bold-italic, color blue) would have been a better choice. Making the change manually would be tedious; fortunately, selector patterns provide a better way. Simply select a range of lines containing all the text you wish to change and execute...
+    \h
+At the prompt, type the following and hit Enter:
+    f+i,cb,k-/ fb && cr && kg
+Explanation: The highlighting spec adds italic, changes text color to blue and removes background highlighting altogether, but affects *only* bold red text on a green background.
+
+The syntax of selector patterns is very similar to that of highlighting specs, and is best explained with examples:
+
+    fu/cr
+        Action: Add underline attribute
+        Applies To: Red text
+
+    cb/cr||f&bi
+        Action: Make foreground color blue
+        Applies To: Text that is red OR has *both* bold *and* italic attributes
+        Note: `f&' should be read as "has *all* of the following attributes"
+
+    fu,kg/cr&&f|bi
+        Action: Add underline attribute AND make background color green
+        Applies To: Text that is red AND has *either* bold *or* italic attributes
+        Note: `f|' should be read as "has *any* of the following attributes"
+
+    fi/cr||f=bu
+        Action: Add italic attribute
+        Applies To: Text that is red OR has bold-underline format attributes and no others
+
+    cb kr f-i / fbi & !(cr & k-)
+        Action: Set fg color blue, bg color red, and remove italic attribute
+        Applies To: Text that is bold-italic AND is NOT red with clear background
+
+** Points to Note **
+Tip: Whitespace (ignored by Txtfmt) can be used to make the expressions (both highlighting and selector) easier to read.
+Caveat: `f&<attrs>' and `f|<attrs>' are atomic constructs, which do not permit embedded spaces.
+Tip: For logical AND and OR, you can drop one of the &'s or |'s.
+Rationale: Logical operators | and & are equivalent to || and &&, respectively, but to avoid confusion with the special `f|' and `f&' primitives, some users may prefer the longer forms.
+Tip: You can drop the `=' from `f=<attrs>' in a selector expression.
+Rationale: `=' is the default operator in selector expressions: i.e., f=ub is equivalent to fub.
+Distinction: In the auto-map highlighting spec itself (i.e., the "action" portion of the spec), f=ub and fub mean different things: the former means set to *exactly* underline-bold, whereas fub is a synonym for f+ub, which means add underline-bold on top of existing format attributes.
+
+=== USAGE EXAMPLE (MANUAL MAPS) ===
+Note: As mentioned earlier, auto maps are much easier to use than manual maps, but for the sake of completeness, here's a walkthrough showing the use of manual maps...
+
+Suppose you wish to enter some green text...
+In Normal mode, you execute one of Txtfmt's "insert-token" mappings (e.g., \i, \I, \a, \A, \o, etc.), and enter the following at the prompt:
+    cg
+Mnemonic: color green
+The text you type now is green.
+
+While typing green text, you wish to emphasize a phrase by making it bold-italic. You execute another mapping (e.g., CTRL-\ CTRL-\ in insert mode) and enter "fbi" or "fib" at the prompt.
+Mnemonic: format bold italic
+The text you type now is green bold-italic.
+Note: Inserting the bold-italic token did not affect the text color, because the color and format regions are completely "orthogonal".
+
+Now you wish to switch to a blue background. Execute another mapping (e.g., CTRL-\ CTRL-\ in insert mode) and enter "kb" at the prompt.
+Mnemonic: bac_k_ground blue
+The text you type now is green bold-italic on a blue background.
+
+At this point, any of the open highlighting regions can be terminated with the corresponding `-' specifier:
+    f- (no format attributes)
+    c- (no color)
+    k- (no background color)
+
+Alternatively, you can enter a non-terminator highlighting spec to change subsequent highlighting without explicitly terminating the preceding region. Inserting "cr", for instance, would switch from green text color to red.
+
+To finish the example, let's terminate the 3 active regions by executing the insert-token mapping (CTRL-\ CTRL-\) one last time and entering the following at the prompt:
+    c-,f-,k-
+Mnemonic: remove color, remove format, remove bac_k_ground color
+Now, the text you type should be plain, unhighlighted text. Notice how multiple format/color specifiers can be concatenated in a comma (or dot) separated list, thereby reducing the number of times you have to execute the mapping. You can use this feature to insert both the start and end tokens of a region at once: e.g.,
+    fbi.f-
+This specifier would enter a bold-italic token, followed immediately by the "no format" token, leaving the cursor between the two.
+Explanation: Txtfmt lets you replace one of the commas with a dot to indicate where the cursor should be positioned after the token insertion.
+
+=== EXPORTING HIGHLIGHTED DOCUMENTS ===
+If you wish to make your highlighted documents available to non-Vim users, simply use the :TOhtml command distributed with Vim to output an HTML version of the Txtfmt buffer.
+
+=== TUTORIAL ===
+
+https://github.com/bpstahlman/txtfmt
+
+=== BUG REPORTS AND FEATURE REQUESTS ===
+
+https://github.com/bpstahlman/txtfmt/issues
+
+=== FEEDBACK ===
+I would greatly appreciate your feedback on this plugin:
+brettstahlman AT gmail DOT com
+
+Also, please rate this plugin!
+
+=== SUGGESTED USES ===
+The following applications represent a few of the many possible uses of the Txtfmt plugin:
+    -For taking notes (e.g., notes taken while reviewing large programming projects)
+    -As part of a personal journaling system
+    -For highlighting .otl files created with Ned Konz' TVO (The Vim Outliner) plugin
+    -For highlighting files created with 'Notes' (Hari Krishna Dara's lightweight note management plugin)
+    -For highlighting text files created with Yongping Guo's TxtBrowser plugin
+    -For beautifying block diagrams created with Dr. Charles Campbell's drawit plugin
+    -For sprucing up programming language comments
+     Don't laugh! You can embed Txtfmt formatting regions within other syntax regions (e.g., C comments)
+     :help txtfmt-'nested'
+    etc...
+
+
+    vim:et:ts=4:sw=4:tw=0:linebreak

@@ -1,0 +1,223 @@
+super + Escape
+	pkill -USR1 -x sxhkd
+
+ctrl + alt + shift + a
+	alarm-dmenu
+
+ctrl + shift + alt + q
+	exec prompt "Are you sure you want to shutdown?" "sudo shutdown -h now"
+
+ctrl + shift + F1
+	st -e xdg-open "$(find . -type d \( -path ./.local/lib -o -path ./.Desktop/Topper/vision \) -prune -false -o -type f  | dmenu -p "Open File:")"
+
+
+ctrl + shift + F2
+	~/.xfrok/scripts/waldl/waldl
+
+ctrl + shift + F3
+	~/.xfrok/scripts/redyt/user
+
+ctrl + shift + F4
+	~/.xfrok/scripts/redyt/redyt
+
+ctrl + shift + F5
+	~/.local/bin/shownotes
+
+ctrl + shift + F6
+	~/.xfrok/scripts/curl-site-link-copy
+
+ctrl + shift + F7
+	~/.xfrok/scripts/pirokit/pirokit
+
+ctrl + shift + F8
+	st -e nvim  ~/Desktop/Phrase.txt
+
+ctrl + shift + F9
+	st -e nvim  ~/Desktop/Word.txt
+
+ctrl + Scroll_Lock
+	killall screenkey || screenkey -p bottom -s small --font-color grey
+
+ctrl + shift + F11
+	ytfzf -D
+
+ctrl + shift + F12
+	clipmenu
+
+ctrl + shift + alt + 0
+	xrandr --output DisplayPort-0 --off
+
+ctrl + shift + alt + 1
+	xrandr --output DisplayPort-0 --auto
+
+ctrl + shift + alt + w
+	~/.xfrok/scripts/connect
+
+ctrl + shift + alt + m
+	mpv --player-operation-mode=pseudo-gui
+
+ctrl + shift + alt + F5
+	bmks-add
+
+ctrl + shift + alt + b
+	bmks
+
+ctrl + shift + alt + k
+	~/.xfrok/scripts/killp
+
+ctrl + shift + alt + n
+	newspapers-sort
+
+ctrl + shift + alt + x
+	xkill
+
+ctrl + shift + z
+	~/.xfrok/scripts/dmsearch
+
+ctrl + shift + x
+	~/.xfrok/scripts/xmouseless/xmouseless
+
+ctrl + shift + alt + s
+	~/.xfrok/scripts/wikipdf
+
+ctrl + alt + c
+	~/.local/bin/minimize
+
+ctrl + alt + shift + c
+	colorp
+
+ctrl + shift + alt + F3
+	delete-open-pdf
+
+ctrl + shift + alt + F4
+	delete-files
+
+alt + F1
+	~/.xfrok/scripts/todo
+
+alt + F2
+	$(curl "wttr.in/Taranagar" > ~/.local/share/weatherreport) && st -e less -S ~/.local/share/weatherreport &&  dunstify "Google Weather: " "$(tuxi weather | head -n -1 | tail -n +2 | sed -e 's/\s\+/-/g')"
+
+alt + F3
+	quotes-dmenu
+
+alt + F4
+	dmenu-books-shortcuts
+
+alt + F5
+	mpv-loop-song
+
+alt + F6
+	dmenu_man
+
+alt + F7
+	great-reads
+
+alt + F8
+	st -e less -S  ~/Desktop/Phrase.txt
+
+alt + F9
+	st -e less -S  ~/Desktop/Word.txt
+
+alt + F10
+	wgetpdf
+
+alt + F11
+	tabbed -c zathura $(shuf -n5 -e ~/Desktop/Revise/*.pdf) -e
+
+alt + F12
+	st -e sxiv -b -f -S 10 $(ls Documents/screenshots/* | shuf)
+
+ctrl + k
+	bash -i -c "history-del"
+
+alt + shift + F12
+	 st -e w3m "http://68k.news/index.php?section=nation&loc=IN"
+
+alt + shift + F1
+	net-toggle
+
+alt + shift + p
+	pronounce $(echo | dmenu -i -p Pronounce)
+
+ctrl + space
+	dunstctl close
+
+ctrl + shift + space
+	dunstctl close-all
+
+ctrl + grave
+	dunstctl history-pop
+
+ctrl + shift + .
+	dunstctl context
+
+# Mocp
+ctrl + shift + m
+	st -e mocp
+
+# Pause audio
+#ctrl + shift + Up
+#	mocp --toggle-pause
+
+# Changes to next/previous tracks
+ctrl + shift + {comma,period}
+	mocp {--prev,--next}
+
+# Seek foward in song
+ctrl + {_,shift +} bracketright
+	mocp --seek +{10,10}
+
+# Seek backward in song
+ctrl + {_,shift +} bracketleft
+	mocp --seek -{10,10}
+
+# Repeat
+ctrl + shift + Down
+	mocp --toggle repeat && notify-send "Mocp Repeat" "$(cat ~/.cache/mocp-repeat | cut -d" " -f1 | head -n 1 && echo "$(tail -n +2 ~/.cache/mocp-repeat)" > ~/.cache/mocp-repeat)" && echo "on off on off " | (IFS=" "; xargs -n 1 echo) >> ~/.cache/mocp-repeat && head -n -2 ~/.cache/mocp-repeat > ~/.cache/tmp2.txt && mv -f ~/.cache/tmp2.txt ~/.cache/mocp-repeat
+
+# Autonext
+ctrl + shift + Up
+	mocp -t n && notify-send "Mocp Autonext" "$(cat ~/.cache/mocp-autonext | cut -d" " -f1 | head -n 1 && echo "$(tail -n +2 ~/.cache/mocp-autonext)" > ~/.cache/mocp-autonext)" && echo "off on off on " |  (IFS=" "; xargs -n 1 echo) >> ~/.cache/mocp-autonext && head -n -2 ~/.cache/mocp-autonext > ~/.cache/tmp.txt && mv -f ~/.cache/tmp.txt ~/.cache/mocp-autonext
+
+#irssi
+ctrl + shift + i
+	st -e irssi
+
+#net-toggle
+ctrl + shift + n
+	internet-used-today
+
+#Dunst toggle
+ctrl + shift + d
+	dunstctl set-paused toggle && notify-send -u critical "Dunst status" "$(dunstctl is-paused)"
+
+#android screen
+ctrl + alt + s
+	scrcpy
+
+#synonyms
+alt + shift + w
+	synonyms
+
+#calcurse
+ctrl + shift + c
+	st -e calcurse
+
+alt + shift + e
+	nsfwdown
+
+alt + shift + ctrl + r
+	kill -HUP $(pgrep -u $USER "\bdwm$"uuu)
+
+alt + shift + ctrl + u
+	url-shortner
+
+alt + shift + ctrl + v
+	st -e cava
+
+alt + shift + ctrl + i
+	 pgrep ibus-daemon && killall -9 ibus-daemon && notify-send "Ibus-daemon" "Off" || ibus-daemon -d && notify-send "Ibus-daemon" "On" && remaps
+
+alt + shift + n
+	pgrep bandwidth || bandwidth && killall sleep
