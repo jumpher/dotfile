@@ -1,0 +1,28 @@
+#!/bin/bash
+username="sagaSTEELS"  # Transmission remote username
+password="PHILIPSfmtaal"   # Transmission remote password
+#sleep 1
+# default display on current host
+DISPLAY=:0.0
+# authorize transmission
+trsm="transmission-remote --auth $username:$password"
+# find out number of torrent
+
+TORRENTLIST=$($trsm --list | sed -e '1d;$d;s/^ *//' | cut --only-delimited --delimiter=' ' --fields=1)
+
+for TORRENTID in $TORRENTLIST
+do
+ echo "* * * * * Operations on torrent ID $TORRENTID starting. * * * * *"
+
+DL_COMPLETED=$($trsm --torrent "$TORRENTID" --info | grep "Percent Done"| cut -d' ' -f 5 | sed 's/\..*$//'| tr -d '%')
+
+if [ "$DL_COMPLETED" -ge "50" ]; then
+	$trsm --torrent "$TORRENTID" --stop && notify-send "💢 This Torrent 👎 is paused " "$(transmission-remote --list | tail -n +2 |sed '$ d'| grep "$TORRENTID   " | cut -c72-) "
+else
+  echo "Torrent #$TORRENTID is not near 50%. Ignoring."
+fi
+
+done
+
+#echo "$TORRENTID"
+#$(transmission-remote --list | cut -c 73- | tail -n +2 |sed '$ d')

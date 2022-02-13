@@ -1,0 +1,33 @@
+#!/bin/sh
+
+curl -Z "https://www.vpnbook.com/freevpn" > /tmp/vpn
+links="$(grep -Eo 'href="[^"]+"' /tmp/vpn| tail -n 8 | cut -c 49- | sed 's/.\{5\}$//'| dmenu -i -p "Which Country:")"
+notify-send -t 1000000 "Vpnbook Credentials" "$(curl "https://nitter.salastil.com/vpnbook" | grep 'tweet-content media-body' | head -n 1 | cut -d'"' -f5 | sed 's/^[^.]*.//' | sed 's/.\{6\}$//' | sed "s/ /\n/3; G" | sed "s/^[ \t]*//" )"
+
+if echo "$links" | grep -w FR8
+then
+	wget -P /tmp/ "https://www.vpnbook.com$(grep -Eo 'href="[^"]+"' /tmp/vpn| tail -n 8 | grep FR8 | cut -d'"' -f2)"
+elif echo "links" | grep -w FR1
+then
+	wget -P /tmp/ "https://www.vpnbook.com$(grep -Eo 'href="[^"]+"' /tmp/vpn| tail -n 8 | grep FR1 | cut -d'"' -f2)"
+elif echo "$links" | grep -w CA198
+then
+	wget -P /tmp/ "https://www.vpnbook.com$(grep -Eo 'href="[^"]+"' /tmp/vpn| tail -n 8 | grep CA198 | cut -d'"' -f2)"
+elif echo "$links" | grep -w CA222
+then
+	wget -P /tmp/ "https://www.vpnbook.com$(grep -Eo 'href="[^"]+"' /tmp/vpn| tail -n 8 | grep CA222 | cut -d'"' -f2)"
+elif echo "$links" | grep -w US2
+then
+	wget -P /tmp/ "https://www.vpnbook.com$(grep -Eo 'href="[^"]+"' /tmp/vpn| tail -n 8 | grep US2 | cut -d'"' -f2)"
+elif echo "$links" | grep -w US1
+then
+	wget -P /tmp/ "https://www.vpnbook.com$(grep -Eo 'href="[^"]+"' /tmp/vpn| tail -n 8 | grep US2 | cut -d'"' -f2)"
+elif echo "$links" | grep -w DE4
+then
+	wget -P /tmp/ "https://www.vpnbook.com$(grep -Eo 'href="[^"]+"' /tmp/vpn| tail -n 8 | grep US2 | cut -d'"' -f2)"
+elif echo "$links" | grep -w PL226
+then
+	wget -P /tmp/ "https://www.vpnbook.com$(grep -Eo 'href="[^"]+"' /tmp/vpn| tail -n 8 | grep US2 | cut -d'"' -f2)"
+fi
+
+cd /tmp/ && yes | unzip "$(ls -Art *.zip | tail -n 1)" -d /tmp/ && st -e sudo openvpn "$(ls -Art  *.ovpn | tail -n 2 | head -n 1)"

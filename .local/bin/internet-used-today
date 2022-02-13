@@ -1,3 +1,12 @@
 #!/bin/sh
 
-notify-send "Internet Used Today" "$(vnstat -h | grep -A 25 "$(date +%Y-%m-%d)" | head -n -1 | tail -n +2 |grep -v -e "00:00" -e "01:00" -e "02:00" -e "03:00" -e "04:00" -e "05:00" -e "06:00" | cut -d'|'  -f3 | grep MiB | tr -d ' ' | awk '{s+=$1} END {printf "%.0f", s}' && printf ' MB' )"
+
+Mb="$(vnstat -h | grep -A 25 "$(date +%Y-%m-%d)" | head -n -1 | tail -n +2 |grep -v -e "00:00" -e "01:00" -e "02:00" -e "03:00" -e "04:00" -e "05:00" -e "06:00" | cut -d'|'  -f3 | grep MiB | tr -d ' ' |awk '{s+=$1} END {printf "%.0f", s}')"
+
+Gb="$(vnstat -h | grep -A 25 "$(date +%Y-%m-%d)" | head -n -1 | tail -n +2 |grep -v -e "00:00" -e "01:00" -e "02:00" -e "03:00" -e "04:00" -e "05:00" -e "06:00" | cut -d'|'  -f3 | grep GiB | tr -d ' '  |awk '{$1=$1/1024; print $1,"MB";}' | cut -c 5- | sed 's/.\{5\}$//')"
+
+
+notify-send "Internet Used Today" "$(echo $Mb $Gb | sed -E -e 's/[[:blank:]]+/\n/g'  | awk '{s+=$1} END {printf "%.0f", s}' && printf ' MB' )"
+
+
+#notify-send "Internet Used Today" "$(vnstat -h | grep -A 25 "$(date +%Y-%m-%d)" | head -n -1 | tail -n +2 |grep -v -e "00:00" -e "01:00" -e "02:00" -e "03:00" -e "04:00" -e "05:00" -e "06:00" | cut -d'|'  -f3 | grep MiB | tr -d ' ' | awk '{s+=$1} END {printf "%.0f", s}' && printf ' MB' )"

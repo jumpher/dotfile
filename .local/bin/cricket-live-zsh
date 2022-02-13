@@ -1,0 +1,5 @@
+#!/bin/sh
+
+while :; do $(notify-send "$(livescore -m https://www.cricbuzz.com$(curl "https://www.cricbuzz.com/cricket-match/live-scores" | grep '/live-cricket-scores/' |grep -Po '(?<=href=")[^"]*' | head -n 2 | tail -n 1 ) | sed '/^$/d' )"); sleep 60; done
+
+#while :; do echo $(notify-send "$(livescore -m https://www.cricbuzz.com/live-cricket-scores/38597/ind-vs-wi-2nd-odi | sed '/^$/d' )"); sleep 10; done

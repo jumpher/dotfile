@@ -1,10 +1,12 @@
 #!/bin/sh
 
-notify-send "🤚Rsync🤚" "Backing up"
+#dunstify "🤚Rsync🤚" "Backing up"
 if sudo umount /dev/sda1 |  grep -w not
 then
 	sudo mount /dev/sda1 /mnt
 elif sudo mount /dev/sda1 /mnt
 then
-	rsync -avxP --exclude-from=/home/ram/.local/bin/ignore_list.txt /home/ram/ /mnt/Arch-backup/home/user-configs/rsyncs && notify-send "🤚Rsync🤚" "Backup Completed" && sudo umount /dev/sda1
+	rsync -avxP --exclude-from=/home/ram/.local/bin/ignore_list.txt /home/ram/ /mnt/Arch-backup/home/user-configs/rsyncs
+	#&& dunstify "🤚Rsync🤚" "Backup Completed"
+		sudo umount /dev/sda1
 fi

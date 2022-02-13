@@ -1,11 +1,22 @@
 #!/bin/sh
 
-
-
 word="$(echo '' | dmenu -p "Synonyms:")"
 
-roots="$(sdcv $word | grep Synonyms | cut -c 19- )"
+#roots="$(sdcv $word | grep Synonyms | cut -c 19- )"
+#echo $roots | tr , '\n' | sed "s/^[ \t]*//" > /tmp/synon.txt
+#echo $roots | sort -u | tr ' ' ' ' | sed -E -e 's/[[:blank:]]+/\n/g'  | tr -d '<>,;|()0123456789|' > /tmp/synon.txt
+#echo -e "\033[1m$(cat /tmp/synon.txt | tr -d ';1234567890' | sed -r '/^\s*$/d')" > /tmp/synon.txt
+#sed -r "s/\x1B\[[0-9;]*[a-zA-Z]//g"
+echo -e "\033[1m$(sdcv -n $word | grep Synonyms | cut -c 19- |sort -u | tr ' ' ' ' | tr -d '<*>,;1234567890(|)'|sed -E -e 's/[[:blank:]]+/\n/g'|sed -r '/^\s*$/d')" > /tmp/synon.txt
 
-echo $roots | tr , '\n' | sed "s/^[ \t]*//" > /tmp/synon.txt
+#phrase="$(head -n 10 /tmp/synon.txt|sed -r "s/\x1B\[[0-9;]*[a-zA-Z]//g " )"
+phrase="$(sed '1,10!d' /tmp/synon.txt|sed -r "s/\x1B\[[0-9;]*[a-zA-Z]//g " )"
+lhrase="$(sed '11,20!d' /tmp/synon.txt|sed -r "s/\x1B\[[0-1;]*[a-zA-Z]//g " )"
+shrase="$(sed '21,30!d' /tmp/synon.txt|sed -r "s/\x1B\[[0-1;]*[a-zA-Z]//g " )"
+ahrase="$(sed '31,40!d' /tmp/synon.txt|sed -r "s/\x1B\[[0-1;]*[a-zA-Z]//g " )"
 
-dunstify -t 6000000 "Synonyms: " "$(head -n 10 '/tmp/synon.txt')" && dunstify -t 6000000 "$(tail -n 10 '/tmp/synon.txt')"
+/usr/bin/notify-send "Synonyms:" "<b>$phrase</b>" >/dev/null 2>&1 && /usr/bin/notify-send "$lhrase" "$shrase" && /usr/bin/notify-send "$ahrase"
+
+#&&  notify-send "$(tail -n 10 /tmp/synon.txt|sed -r "s/\x1B\[[0-9;]*[a-zA-Z]//g" )"
+#notify-send -t 6000000 "Synonyms: " "$(head -n 10 '/tmp/synon.txt' | sed -r "s/\x1B\[[0-9;]*[a-zA-Z]//g")" && dunstify -t 6000000 "$(tail -n 10 '/tmp/synon.txt' | sed -r "s/\x1B\[[0-9;]*[a-zA-Z]//g")"
+#dunstify -t 6000000 "Synonyms: " "$(head -n 10 '/tmp/synon.txt')" && dunstify -t 6000000 "$(tail -n 10 '/tmp/synon.txt')"

@@ -11,7 +11,7 @@ transmission-remote -l | grep % |
 		sort -h | uniq -c | awk '{print $3 $1}' | paste -sd ' ' -
 
 case $BLOCK_BUTTON in
-	1) setsid -f "$TERMINAL" -e tremc ;;
+	1) setsid -f "$TERMINAL" -e transmission-remote -l ;;
 	2) td-toggle ;;
 	3) notify-send "🌱 Torrent module" "\- Left click to open tremc.
 - Middle click to toggle transmission.

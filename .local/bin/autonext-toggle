@@ -1,0 +1,12 @@
+#!/bin/sh
+# This shell script is PUBLIC DOMAIN. You may do whatever you want with it.
+
+TOGGLE=/tmp/autonext-toggle
+
+if [ ! -e $TOGGLE ]; then
+    touch $TOGGLE
+    mocp -o autonext | notify-send "Mocp" "Autonext On"
+else
+    rm $TOGGLE
+    mocp -u autonext | notify-send "Mocp" "Autonext Off"
+fi

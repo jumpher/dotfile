@@ -1,0 +1,8 @@
+#!/bin/sh
+
+while :; do
+	/home/ram/.local/bin/tsm-pause-at-50
+	sleep 30
+done
+
+nohup /home/ram/.local/bin/tsm-pause-at-50  > /dev/null

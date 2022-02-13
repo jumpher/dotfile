@@ -1,13 +1,19 @@
 #!/bin/sh
 
-notify-send "Syncing vimwiki with Google Drive"
+rm -rf ~/.google-drive/vimwiki
 
 google-drive-ocamlfuse ~/.google-drive
 
 mkdir ~/.google-drive/vimwiki
 
-rsync -avrxP --exclude='*/' /home/ram/vimwiki/ /home/ram/.google-drive/vimwiki/
+mkdir /tmp/vimwiki
 
-notify-send "Synced with Google Drive"
+rsync -avrxP --exclude='*/' /home/ram/vimwiki/ /tmp/vimwiki/
+
+cd /tmp/vimwiki/
+
+find . -iname "*.md" -exec bash -c 'mv "$0" "${0%\.md}.txt"' {} \;
+
+rsync -avrxP --exclude='*/' /tmp/vimwiki/ /home/ram/.google-drive/vimwiki/
 
 fusermount -u ~/.google-drive

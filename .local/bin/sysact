@@ -10,7 +10,7 @@ esac
 
 cmds="\
 🔒 lock		slock & pauseallmpv
-⏰ screensaver	    slock & xset dpms force off ; mpc pause
+⏰ screensaver	    slock & xset dpms force off
 🚪 leave dwm	kill -TERM $(pgrep -u $USER "\bdwm$")
 ♻ renew dwm	kill -HUP $(pgrep -u $USER "\bdwm$")
 🐻 hibernate	slock ${hib:-systemctl suspend-then-hibernate -i}

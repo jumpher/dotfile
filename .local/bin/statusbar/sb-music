@@ -20,8 +20,7 @@ printf "🎵🎼🎵🎶"
 case $BLOCK_BUTTON in
   2) mocp -G || $TERMINAL mocp ;;
   1) $TERMINAL mocp ;;
-  3) notify-send "🎵 Playing Now:
-$(mocp -Q %file | cut -d'/' -f5)" ;;
+  3) notify-send -t 1200 "🎵Now Playing" "$(mocp -Q %file | cut -c 18- | sed 's|instrumental/||g' | sed 's|art-of-rally/||g' | sed 's|Nusrat Fateh Ali Khan/||g' | sed -e "s/\b\(.\)/\u\1/g" |grep -oP '.*?(?=\.)')";;
         4) mocp -r ;;  # scroll up, previous
   5) mocp -f  ;; # scroll down, next
 esac
@@ -31,3 +30,6 @@ esac
 #- Middle click to open player
 #- Scroll to change songs.
 #- Right Click to open this." ;;
+
+#  3) notify-send "🎵 Playing Now:
+#$(mocp -Q %file | cut -d'/' -f5)" ;;
