@@ -1,164 +1,210 @@
+#Reload Sxhkd
 super + Escape
 	pkill -USR1 -x sxhkd
 
+#Set an Alarm
 ctrl + alt + shift + a
 	alarm-dmenu
 
+#Prompt Shutdown
 ctrl + shift + alt + q
 	exec prompt "Are you sure you want to shutdown?" "sudo shutdown -h now"
 
+#Find Files
 ctrl + shift + F1
 	st -e xdg-open "$(find . -type d \( -path ./.local/lib -o -path ./.Desktop/Topper/vision \) -prune -false -o -type f  | dmenu -p "Open File:")"
 
-
+#Find pics with Waldl
 ctrl + shift + F2
 	~/.xfrok/scripts/waldl/waldl
 
+#Scrap Redytuser
 ctrl + shift + F3
 	~/.xfrok/scripts/redyt/user
 
+#Scrap Redytsub
 ctrl + shift + F4
 	~/.xfrok/scripts/redyt/redyt
 
+#Show shownotes
 ctrl + shift + F5
 	~/.local/bin/shownotes
 
+#Curl a file to 0x0.st
 ctrl + shift + F6
 	~/.xfrok/scripts/curl-site-link-copy
 
+#Pirokit torrent
 ctrl + shift + F7
 	~/.xfrok/scripts/pirokit/pirokit
 
+#Phrases
 ctrl + shift + F8
 	st -e nvim  ~/Desktop/Phrase.txt
 
+#Words
 ctrl + shift + F9
 	st -e nvim  ~/Desktop/Word.txt
 
+#Screenkey
 ctrl + Scroll_Lock
 	killall screenkey || screenkey -p bottom -s small --font-color grey
 
+#Ytfzf search
 ctrl + shift + F11
 	ytfzf -D
 
+#Clipmenu
 ctrl + shift + F12
 	clipmenu
 
+#Screen Off
 ctrl + shift + alt + 0
 	xrandr --output DisplayPort-0 --off
 
+#Screen On
 ctrl + shift + alt + 1
 	xrandr --output DisplayPort-0 --auto
 
+#Connect to a Wifi
 ctrl + shift + alt + w
 	~/.xfrok/scripts/connect
 
+#MPV GUI
 ctrl + shift + alt + m
 	mpv --player-operation-mode=pseudo-gui
 
+#Add bookmarks
 ctrl + shift + alt + F5
-	bmks-add
+	bmks-add && notify-send " Bmks-added"
 
+#Show bookmarks
 ctrl + shift + alt + b
 	bmks
 
+#Kill a program
 ctrl + shift + alt + k
 	~/.xfrok/scripts/killp
 
+#Read a Newspaper
 ctrl + shift + alt + n
 	newspapers-sort
 
+#Kill a program
 ctrl + shift + alt + x
 	xkill
 
+#Search sites
 ctrl + shift + z
 	~/.xfrok/scripts/dmsearch
 
+#Control mouse with keys
 ctrl + shift + x
 	~/.xfrok/scripts/xmouseless/xmouseless
 
+#Scrap Wikipedia
 ctrl + shift + alt + s
 	~/.xfrok/scripts/wikipdf
 
+#Minimize a window
 ctrl + alt + c
 	~/.local/bin/minimize
 
+#Pick a color hex
 ctrl + alt + shift + c
 	colorp
 
+#Delete open pdfs
 ctrl + shift + alt + F3
 	delete-open-pdf
 
+#Delete files
 ctrl + shift + alt + F4
 	delete-files
 
+#Todo
 alt + F1
 	~/.xfrok/scripts/todo
 
+#Weather
 alt + F2
-	$(curl "wttr.in/Taranagar" > ~/.local/share/weatherreport) && st -e less -S ~/.local/share/weatherreport &&  dunstify "Google Weather: " "$(tuxi weather | head -n -1 | tail -n +2 | sed -e 's/\s\+/-/g')"
+	$(curl "wttr.in/Taranagar" > ~/.local/share/weatherreport) && st -e less -S ~/.local/share/weatherreport
 
+#Quotes
 alt + F3
 	quotes-dmenu
 
+#Books To Read
 alt + F4
 	dmenu-books-shortcuts
 
+#Loop a Song
 alt + F5
 	mpv-loop-song
 
+#Read a Manpage
 alt + F6
 	dmenu_man
 
+#Great Reads
 alt + F7
 	great-reads
 
+#Read Phrases
 alt + F8
 	st -e less -S  ~/Desktop/Phrase.txt
 
+#Read Words
 alt + F9
 	st -e less -S  ~/Desktop/Word.txt
 
+#Download pdfs
 alt + F10
 	wgetpdf
 
+#Read Random
 alt + F11
 	tabbed -c zathura $(shuf -n5 -e ~/Desktop/Revise/*.pdf) -e
 
+#Screenshots
 alt + F12
 	st -e sxiv -b -f -S 10 $(ls Documents/screenshots/* | shuf)
 
+#Delete history lines
 ctrl + k
 	bash -i -c "history-del"
 
+#Read google news
 alt + shift + F12
 	 st -e w3m "http://68k.news/index.php?section=nation&loc=IN"
 
+#Turn on/off internet
 alt + shift + F1
 	net-toggle
 
+#Pronounce Words
 alt + shift + p
 	pronounce $(echo | dmenu -i -p Pronounce)
 
+#Close Dunstctl
 ctrl + space
 	dunstctl close
 
+#Closeall Dunstctl
 ctrl + shift + space
 	dunstctl close-all
 
+#Dunstctl History-Pop
 ctrl + grave
 	dunstctl history-pop
 
+#Dunstctl Context
 ctrl + shift + .
 	dunstctl context
 
 # Mocp
 ctrl + shift + m
 	st -e mocp
-
-# Pause audio
-#ctrl + shift + Up
-#	mocp --toggle-pause
 
 # Changes to next/previous tracks
 ctrl + shift + {comma,period}
@@ -172,19 +218,31 @@ ctrl + {_,shift +} bracketright
 ctrl + {_,shift +} bracketleft
 	mocp --seek -{10,10}
 
+#Play/Pause
+ctrl + shift + question
+	mocp -G
+
 # Repeat
 ctrl + shift + Down
-	mocp --toggle repeat && notify-send "Mocp Repeat" "$(cat ~/.cache/mocp-repeat | cut -d" " -f1 | head -n 1 && echo "$(tail -n +2 ~/.cache/mocp-repeat)" > ~/.cache/mocp-repeat)" && echo "on off on off " | (IFS=" "; xargs -n 1 echo) >> ~/.cache/mocp-repeat && head -n -2 ~/.cache/mocp-repeat > ~/.cache/tmp2.txt && mv -f ~/.cache/tmp2.txt ~/.cache/mocp-repeat
+	repeat-toggle
 
 # Autonext
 ctrl + shift + Up
-	mocp -t n && notify-send "Mocp Autonext" "$(cat ~/.cache/mocp-autonext | cut -d" " -f1 | head -n 1 && echo "$(tail -n +2 ~/.cache/mocp-autonext)" > ~/.cache/mocp-autonext)" && echo "off on off on " |  (IFS=" "; xargs -n 1 echo) >> ~/.cache/mocp-autonext && head -n -2 ~/.cache/mocp-autonext > ~/.cache/tmp.txt && mv -f ~/.cache/tmp.txt ~/.cache/mocp-autonext
+	autonext-toggle
 
-#irssi
+## Repeat
+#ctrl + shift + Down
+#	mocp --toggle repeat && notify-send "Mocp Repeat" "$(cat ~/.cache/mocp-repeat | cut -d" " -f1 | head -n 1 && echo "$(tail -n +2 ~/.cache/mocp-repeat)" > ~/.cache/mocp-repeat)" && echo "on off on off " | (IFS=" "; xargs -n 1 echo) >> ~/.cache/mocp-repeat && head -n -2 ~/.cache/mocp-repeat > ~/.cache/tmp2.txt && mv -f ~/.cache/tmp2.txt ~/.cache/mocp-repeat
+#
+## Autonext
+#ctrl + shift + Up
+#	mocp -t n && notify-send "Mocp Autonext" "$(cat ~/.cache/mocp-autonext | cut -d" " -f1 | head -n 1 && echo "$(tail -n +2 ~/.cache/mocp-autonext)" > ~/.cache/mocp-autonext)" && echo "off on off on " |  (IFS=" "; xargs -n 1 echo) >> ~/.cache/mocp-autonext && head -n -2 ~/.cache/mocp-autonext > ~/.cache/tmp.txt && mv -f ~/.cache/tmp.txt ~/.cache/mocp-autonext
+
+#Irssi
 ctrl + shift + i
 	st -e irssi
 
-#net-toggle
+#Internet Used Today
 ctrl + shift + n
 	internet-used-today
 
@@ -192,32 +250,42 @@ ctrl + shift + n
 ctrl + shift + d
 	dunstctl set-paused toggle && notify-send -u critical "Dunst status" "$(dunstctl is-paused)"
 
-#android screen
+#Android screen
 ctrl + alt + s
 	scrcpy
 
-#synonyms
+#Synonyms
 alt + shift + w
 	synonyms
 
-#calcurse
+#Calcurse
 ctrl + shift + c
 	st -e calcurse
 
-alt + shift + e
-	nsfwdown
-
+#Renew Dwm
 alt + shift + ctrl + r
 	kill -HUP $(pgrep -u $USER "\bdwm$"uuu)
 
+#Url-shortner
 alt + shift + ctrl + u
 	url-shortner
 
+#Cava Music Visualiser
 alt + shift + ctrl + v
 	st -e cava
 
+#Toggle Ibus-daemon
 alt + shift + ctrl + i
 	 pgrep ibus-daemon && killall -9 ibus-daemon && notify-send "Ibus-daemon" "Off" || ibus-daemon -d && notify-send "Ibus-daemon" "On" && remaps
 
+#Toggle Bandwidth
 alt + shift + n
 	pgrep bandwidth || bandwidth && killall sleep
+
+#Transadd and TSM-Repeat
+super + F6
+	transadd && tsm-pause-at-50-repeat
+
+#TSM-Repeat
+super + F5
+	tsm-pause-at-50
